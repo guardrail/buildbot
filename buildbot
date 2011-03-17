@@ -18,6 +18,9 @@ fi
 mkdir -p status
 
 for conf in "$@"; do
+    log=$(tempfile)
+    trap "rm $log" 0
+    exec > "$log" 2>&1
     . "$conf"
     
     if ! [ -e "$BUILD" ]; then
@@ -48,5 +51,7 @@ for conf in "$@"; do
             ./upload "$OUTFILE" "$GITHUBREPO"
             echo "$thishash" > "$hashfile"
         )
+
+        mail -s "$MAIL_SUBJ" "$MAIL_TO" < "$log"
     fi
 done
