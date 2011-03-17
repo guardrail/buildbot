@@ -1,0 +1,20 @@
+This is a simple build bot written for building guardrail
+(https://github.com/guardrail/guardrail) but can also be used for other
+projects.
+
+Each project (or whatever is to be built) has a configuration file,
+ideally in configs/, see the template there for an example - it should
+be self-explaining. The build bot then fetches the repository (either
+with clone or with pull, the latter only allowing fast-forward commits)
+into the specified path, runs make and puts the generated file (again
+see the template) onto github, check the.. you already know.
+
+For the uploader script you need an upload.creds, see
+upload.creds.example for an example. You can see your API key in your
+account settings on github. Also, you currently need a patched version
+of Net::GitHub::Upload that supports deletion of uploaded files (so you
+can replace your foo-current.tgz). For now, use the "deletefile" branch
+from git://github.com/yath/net-github-upload-perl.git.
+
+It's very hackish but it works for me :-) For pull requests proceed as
+usual, for questions drop me a mail at yath@yath.de
