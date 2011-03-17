@@ -12,7 +12,7 @@ mydir="$(pwd)"
 
 if [ "$#" -lt 1 ]; then
     echo "Usage: $0 <config1> [<config2> [<config3> ...]]" >&2
-    echo "Configuration files are relative to the script"
+    echo "Configuration files are relative to the script" >&2
 fi
 
 mkdir -p status
