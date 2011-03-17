@@ -1,0 +1,5 @@
+REPOURL=git://github.com/foo/bar.git
+BUILD=/home/foo/build/bar
+BRANCH=master
+OUTFILE=/home/foo/build/bar/bar-latest.xpi
+GITHUBREPO=foo/bar

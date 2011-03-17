@@ -1,0 +1,52 @@
+#!/bin/sh
+set -e
+
+gethash() {
+    git log -n1 --pretty="format:%H"
+}
+
+mydir="$(dirname "$0")"
+[ -z "$mydir" ] && mydir="."
+cd $mydir
+mydir="$(pwd)"
+
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 <config1> [<config2> [<config3> ...]]" >&2
+    echo "Configuration files are relative to the script"
+fi
+
+mkdir -p status
+
+for conf in "$@"; do
+    . "$conf"
+    
+    if ! [ -e "$BUILD" ]; then
+        git clone "$REPOURL" "$BUILD"
+    fi
+    
+    if ! [ -d "$BUILD/.git" ]; then
+        echo "$BUILD exists but does not appear to be a git repository. exiting." >&2
+        exit 1
+    fi
+
+    hashfile=status/"$(basename "$conf")" # may collide
+    lasthash="$(cat "$hashfile" || true)"
+    
+    cd "$BUILD"
+    
+    git checkout "$BRANCH"
+    git pull --ff-only
+
+    thishash=$(gethash)
+    if [ "$lasthash" != "$thishash" ]; then
+    
+        echo "Building $conf..."
+        make
+        (
+            cd "$mydir"
+            echo "Uploading $conf..."
+            ./upload "$OUTFILE" "$GITHUBREPO"
+            echo "$thishash" > "$hashfile"
+        )
+    fi
+done

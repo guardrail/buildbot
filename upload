@@ -1,0 +1,52 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use vars qw(%creds);
+use File::Basename;
+
+BEGIN {
+    -e "upload.localdefs" and do "upload.localdefs"; # you can put your "use lib"s there
+}
+
+use Net::GitHub::Upload;
+BEGIN {
+    unless (Net::GitHub::Upload->can("delete")) {
+        die "Your installation of Net::GitHub::Upload does not support deletion\n".
+            "of files. Please grab, for now, a supported version from\n".
+            "     https://github.com/yath/net-github-upload-perl\n".
+            "and check out the 'deletefile' branch.\n";
+    }
+}
+
+# enough for compilation phase
+
+use constant CREDS => "upload.creds";
+unless (my $ret = do +CREDS) {
+    die "Unable to parse @{[CREDS]}: $@" if $@;
+    die "Unable to import @{[CREDS]}: $!" unless defined $ret;
+    die "Unable to run @{[CREDS]}" unless $ret;
+}
+
+my ($filename, $repo) = @ARGV;
+die "Usage: $0 <filename> <repository>" unless $filename && $repo;
+
+# set it up
+my $github = Net::GitHub::Upload->new(
+    login => $creds{login},
+    token => $creds{token},
+);
+
+# delete leftover stuff
+if (my $files = $github->list_files($repo)) {
+    foreach my $file (@$files) {
+        my $fbname = basename($filename);
+        next unless $file->{name} eq $fbname;
+        $github->delete(repos => $repo, fileinfo => $file) or die;
+    }
+}
+
+# and upload
+$github->upload(
+    repos => $repo,
+    file  => $filename,
+) or die;

@@ -1,0 +1,6 @@
+%creds = (
+    login => "foo",
+    token => "abcdef",
+);
+
+1
