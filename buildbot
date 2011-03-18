@@ -44,7 +44,7 @@ for conf in "$@"; do
     if [ "$lasthash" != "$thishash" ]; then
         echo "============= git log follows ============="
         echo
-        git log "${lasthash}^..${thishash}"
+        git log "${lasthash}..${thishash}"
         echo
         echo "============================================"
     
