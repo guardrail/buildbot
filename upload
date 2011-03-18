@@ -27,8 +27,15 @@ unless (my $ret = do +CREDS) {
     die "Unable to run @{[CREDS]}" unless $ret;
 }
 
-my ($filename, $repo, $cttype) = @ARGV;
-die "Usage: $0 <filename> <repository> [content-type]" unless $filename && $repo;
+my ($filename, $repo) = @ARGV;
+die "Usage: $0 <filename> <repository>" unless $filename && $repo;
+
+# The MIME content type may be specified in brackets after the
+# file name. If the file name *really* contains square brackets
+# one can just append [].
+my $mimetype = do {
+    $filename =~ s/(.*)\[(.*)\]$/$1/ ? $2 : undef
+};
 
 # set it up
 my $github = Net::GitHub::Upload->new(
@@ -49,5 +56,5 @@ if (my $files = $github->list_files($repo)) {
 $github->upload(
     repos        => $repo,
     file         => $filename,
-    content_type => $cttype,
+    content_type => $mimetype,
 ) or die;
