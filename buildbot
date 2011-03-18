@@ -49,7 +49,7 @@ for conf in "$@"; do
         echo "============================================"
     
         echo "Building $conf..."
-        echo "$thishash" > "$hashfile"
+        echo "$thishash" > "$mydir/$hashfile"
         make
         (
             cd "$mydir"
