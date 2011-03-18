@@ -53,6 +53,7 @@ if (my $files = $github->list_files($repo)) {
 }
 
 # and upload
+warn "Uploading \"$filename\" (content type: @{[$mimetype||'unknown']}) to $repo\n";
 $github->upload(
     repos        => $repo,
     file         => $filename,
