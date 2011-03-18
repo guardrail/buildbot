@@ -49,6 +49,7 @@ for conf in "$@"; do
         echo "============================================"
     
         echo "Building $conf..."
+        echo "$thishash" > "$hashfile"
         make
         (
             cd "$mydir"
@@ -58,7 +59,6 @@ for conf in "$@"; do
                 ./upload "$outfile" "$GITHUBREPO"
             done
             echo "Everything done"
-            echo "$thishash" > "$hashfile"
         )
 
         mail -s "$MAIL_SUBJ" "$MAIL_TO" < "$log"
