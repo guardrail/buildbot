@@ -56,7 +56,7 @@ for conf in "$@"; do
             echo "Uploading $conf..."
             for outfile in $OUTFILES; do
                 echo "==> $outfile"
-                ./upload "$outfile" "$GITHUBREPO"
+                ./github-upload "$outfile" "$GITHUBREPO"
             done
             echo "Everything done"
         )

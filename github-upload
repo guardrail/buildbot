@@ -5,7 +5,7 @@ use vars qw(%creds);
 use File::Basename;
 
 BEGIN {
-    -e "upload.localdefs" and do "upload.localdefs"; # you can put your "use lib"s there
+    -e "github-upload.localdefs" and do "github-upload.localdefs"; # you can put your "use lib"s there
 }
 
 use Net::GitHub::Upload;
@@ -20,7 +20,7 @@ BEGIN {
 
 # enough for compilation phase
 
-use constant CREDS => "upload.creds";
+use constant CREDS => "github-upload.creds";
 unless (my $ret = do +CREDS) {
     die "Unable to parse @{[CREDS]}: $@" if $@;
     die "Unable to import @{[CREDS]}: $!" unless defined $ret;
