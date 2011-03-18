@@ -27,8 +27,8 @@ unless (my $ret = do +CREDS) {
     die "Unable to run @{[CREDS]}" unless $ret;
 }
 
-my ($filename, $repo) = @ARGV;
-die "Usage: $0 <filename> <repository>" unless $filename && $repo;
+my ($filename, $repo, $cttype) = @ARGV;
+die "Usage: $0 <filename> <repository> [content-type]" unless $filename && $repo;
 
 # set it up
 my $github = Net::GitHub::Upload->new(
@@ -47,6 +47,7 @@ if (my $files = $github->list_files($repo)) {
 
 # and upload
 $github->upload(
-    repos => $repo,
-    file  => $filename,
+    repos        => $repo,
+    file         => $filename,
+    content_type => $cttype,
 ) or die;
