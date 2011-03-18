@@ -1,7 +1,7 @@
 REPOURL=git://github.com/foo/bar.git
 BUILD=/home/foo/build/bar
 BRANCH=master
-OUTFILE="/home/foo/build/bar/bar-latest.xpi[application/x-xpinstall]"
+OUTFILES="/home/foo/build/bar/bar-latest.xpi[application/x-xpinstall] /home/foo/build/bar/bar-latest-update.rdf[application/rdf+xml]"
 GITHUBREPO=foo/bar
 MAIL_TO=foo@bar.baz
 MAIL_SUBJ="buildbot output for foo repository"
