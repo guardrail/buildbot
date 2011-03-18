@@ -42,6 +42,11 @@ for conf in "$@"; do
 
     thishash=$(gethash)
     if [ "$lasthash" != "$thishash" ]; then
+        echo "============= git log follows ============="
+        echo
+        git log -n1
+        echo
+        echo "============================================"
     
         echo "Building $conf..."
         make
