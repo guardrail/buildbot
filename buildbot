@@ -53,7 +53,7 @@ for conf in "$@"; do
         (
             cd "$mydir"
             echo "Uploading $conf..."
-            ./upload "$OUTFILE" "$GITHUBREPO" "$OUTCTTYPE"
+            ./upload "$OUTFILE" "$GITHUBREPO"
             echo "$thishash" > "$hashfile"
         )
 
